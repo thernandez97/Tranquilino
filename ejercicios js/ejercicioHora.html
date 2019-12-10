@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>ejercicio 1</title>
+    <script type="text/javascript">
+        
+        var horas= +prompt("Ingresa las horas del primer instante de tiempo");
+        var minutos= +prompt("Ingresa los minutos del primer instante de tiempo");
+        var segundos= +prompt("Ingresa las segundos del primer instante de tiempo");
+
+
+        var horas2= +prompt("Ingresa las horas del segundo instante de tiempo");
+        var minutos2= +prompt("Ingresa los minutos del segundo instante de tiempo");
+        var segundos2= +prompt("Ingresa las segundos del segundo instante de tiempo");
+        var segundosT1=horas*3600+minutos*60+segundos;
+        var segundosT2=horas2*3600+minutos2*60+segundos2;
+
+        var segundosT=segundosT2-segundosT1;
+        if(segundosT<0){
+        	segundosT*=-1;
+        }
+
+        console.log("segundosT"+segundosT);
+
+        console.log("horas"+horas);
+        console.log("minutos"+minutos);
+        console.log("segundo"+segundos);
+        console.log("horas2"+horas2);
+        console.log("minutos2"+minutos2);
+        console.log("segundo2"+segundos2);
+        var res=(segundosT-(segundosT % 3600))/3600;
+        var horasF=res;
+        res=(res%3600);
+        var minutosF=res;
+       	res=(res%60);
+        var segundosF=res;
+        console.log("hf"+horasF);
+        console.log("mf"+minutosF);
+        console.log("sf"+segundosF);
+
+
+
+        alert("han transcurrido\n"+(horasF)+ ":"+ (minutosF)+":"+(segundosF));
+      
+ 
+     
+    </script>
+
+</head>
+<body>
+  
+</body>
+</html>

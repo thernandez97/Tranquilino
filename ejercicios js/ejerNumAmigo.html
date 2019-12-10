@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>ejercicio 1</title>
+    <script type="text/javascript">
+        
+        var a= +prompt("Ingresa el valor de A");
+        var b= +prompt("Ingresa el valor de B");
+
+
+        var valo=0;
+        var valo2=0;
+        for(var i=1;i<b;i++){
+            if(a%i==0){
+                valo=valo+i;
+                console.log(valo,i);
+                if(valo==b)
+                    break;
+
+            }
+
+
+        }
+        for(var i=1;i<a;i++){
+            if(b%i==0){
+                valo2=valo2+i;
+                if(valo2==b)
+                    break;
+            }
+
+
+
+        }
+        console.log("valo:"+",valo2:"+valo2);  
+
+      if(valo==b && valo2==a){
+        alert("los valores:"+a+" y "+b+" son broders");
+      }
+      else{
+        alert("los valores: "+a+" y "+b+" no son broders");
+      }
+ 
+     
+    </script>
+
+</head>
+<body>
+  
+</body>
+</html>
