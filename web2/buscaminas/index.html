@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>BUSCAMINAS</title>
+  <script crossorigin src="https://unpkg.com/react@16/umd/react.development.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+  <script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
+  <LINK REL=StyleSheet HREF="estilos.css" TYPE="text/css" >  
+</head>
+
+<body>
+    <div 
+        id="errors" style="
+        background: #c70909;
+        color: #ffffff;
+        display: none;
+        margin: -20px -20px 20px;
+        padding: 20px;
+        white-space: pre-wrap;">
+    </div>
+    <div id="root"
+
+    ></div>
+    <script type="text/babel">
+        window.addEventListener('mousedown', function(e) {
+            document.body.classList.add('mouse-navigation');
+            document.body.classList.remove('kbd-navigation');
+        });
+        window.addEventListener('keydown', function(e) {
+        if (e.keyCode === 9) {
+            document.body.classList.add('kbd-navigation');
+            document.body.classList.remove('mouse-navigation');
+        }
+        });
+        window.addEventListener('click', function(e) {
+            if (e.target.tagName === 'A' && e.target.getAttribute('href') === '#') {
+                e.preventDefault();
+            }
+        });
+        window.onerror = function(message, source, line, col, error) {
+            var text = error ? error.stack || error : message + ' (at ' + source + ':' + line + ':' + col + ')';
+            errors.textContent += text + '\n';
+            errors.style.display = '';
+        };
+        console.error = (function(old) {
+            return function error() {
+                errors.textContent += Array.prototype.slice.call(arguments).join(' ') + '\n';
+                errors.style.display = '';
+                old.apply(this, arguments);
+            }
+        })(console.error);
+    
+        
+        function Square(props){
+            var letterStyle={
+                backgroundColor:props.stat==null?"#a02d2d":"white",
+			}
+            return(
+                <button 
+                    style={letterStyle}
+                    className="square"
+                    onClick={props.onClick}
+                    >
+                    {props.stat==1?(props.value==-1?
+                      <img src="bomba.png" with="30" height="30"/>:
+                      props.value):null}
+                    
+                </button>    
+            );
+        }
+        class Board extends React.Component{
+
+            renderSquare(i) {
+                //console.log("--l94",this.props.squares[i]);
+                return (
+                          <Square
+                           
+                           value={this.props.squares[i][0]}
+                           stat={this.props.squares[i][1]}  
+                           onClick={() => this.props.onClick(i)}
+                              />
+                        );
+            }
+            renFila(b){
+                return (
+                    <div className="board-row"
+                        
+                        >
+                        {this.renderSquare(0+b)}
+                        {this.renderSquare(1+b)}
+                        {this.renderSquare(2+b)}
+                        {this.renderSquare(3+b)}
+                        {this.renderSquare(4+b)}
+                        {this.renderSquare(5+b)}
+                        {this.renderSquare(6+b)}
+                        {this.renderSquare(7+b)}
+                        {this.renderSquare(8+b)}
+                        
+
+                    </div>    
+                );
+            }
+            render() {
+                
+                return(
+                    <div>
+                    <h1>juego de buscaminas</h1>
+                        
+                    {this.renFila(0)}
+                    {this.renFila(9)}
+                    {this.renFila(18)}
+                    {this.renFila(27)}
+                    {this.renFila(36)}
+                    {this.renFila(45)}
+                    {this.renFila(54)}
+                    {this.renFila(63)}
+                    {this.renFila(72)}
+                        
+                        
+                </div>
+                );
+            }
+        }
+        function getRandomArbitrary(min, max) {
+                return Math.random() * (max - min) + min;
+        }
+        function repe(lis,dat){
+            for(var a of lis){
+                if(a==dat){
+                    return true;
+                }
+                
+            }
+            return false;
+        }
+        function ale(n){
+                var l=Array(n);
+                var temp=0;
+                for(var i=0;i<n;i++){
+                    
+                    temp=Math.trunc( getRandomArbitrary(0,82));
+                    while(repe(l,temp)){
+                        temp=Math.trunc( getRandomArbitrary(0,82));
+                    }
+                    l[i]=temp;
+                }
+                console.log(l);
+                return l;
+            }
+        function ale2(tam,ls){
+                //funcion para crear la matriz de datos 
+                // tam debe de representar el tamaño y ls la lista de datos creados aleatoriamente 
+            
+                var lis = Array(tam);
+                for(var i=0;i<tam;i++){
+                    lis[i]=[0,null];
+                }
+                for(var s of ls){//ciclo de la lista de ramdons
+                    console.log("s",s,lis[s]);
+                    lis[s][0]=-1;
+                    
+                    var fila=Math.trunc(s/9);
+                    var colm=s-(fila*9);
+                    console.log("a/tam");
+                    var a=s-10;
+                    var b=s-9;
+                    var c=s-8;
+                    var d=s-1;
+                    var e=s+1;
+                    var f=s+8;
+                    var g=s+9;
+                    var h=s+10;
+                        
+                    if(colm>0 && colm <8 && fila>0 && fila<8){
+                        
+                           console.log("a:",a);
+                           console.log("b:",b);
+                           console.log("c:",c);
+                           console.log("d:",d);
+                           console.log("e:",e);
+                           console.log("f:",f);
+                           console.log("g:",g);
+                           console.log("h:",h);
+                            console.log("impo",colm,".",fila);
+                            lis[a][0]+=lis[a][0]!=-1?1:0;
+                            lis[b][0]+=lis[b][0]!=-1?1:0;
+                            lis[c][0]+=lis[c][0]!=-1?1:0;
+                            lis[d][0]+=lis[d][0]!=-1?1:0;
+                            lis[e][0]+=lis[e][0]!=-1?1:0;
+                            lis[f][0]+=lis[f][0]!=-1?1:0;
+                            lis[g][0]+=lis[g][0]!=-1?1:0;
+                            lis[h][0]+=lis[h][0]!=-1?1:0;
+                        
+                    }
+                    else{
+                        if(fila==0 && colm>0 && colm < 8){
+                            lis[d][0]+=lis[d][0]!=-1?1:0;
+                            lis[e][0]+=lis[e][0]!=-1?1:0;
+                            lis[f][0]+=lis[f][0]!=-1?1:0;
+                            lis[g][0]+=lis[g][0]!=-1?1:0;
+                            lis[h][0]+=lis[h][0]!=-1?1:0;     
+                        }
+                        if(fila==0 && colm==0){
+                            lis[e][0]+=lis[e][0]!=-1?1:0;
+                            lis[g][0]+=lis[g][0]!=-1?1:0;
+                            lis[h][0]+=lis[h][0]!=-1?1:0;
+
+                        }
+                        if(fila ==0 && colm == 8){
+                            lis[d][0]+=lis[d][0]!=-1?1:0;
+                            lis[f][0]+=lis[f][0]!=-1?1:0;
+                            lis[g][0]+=lis[g][0]!=-1?1:0;
+
+                        }
+                        if(fila > 0 && fila < 8 && colm ==0){
+                            lis[b][0]+=lis[b][0]!=-1?1:0;
+                            lis[g][0]+=lis[g][0]!=-1?1:0;
+                            lis[c][0]+=lis[c][0]!=-1?1:0;
+                            lis[e][0]+=lis[e][0]!=-1?1:0;
+                            lis[h][0]+=lis[h][0]!=-1?1:0;
+                        }
+                        if(fila > 0 && fila < 8 && colm ==8){
+                            lis[b][0]+=lis[b][0]!=-1?1:0;
+                            lis[g][0]+=lis[g][0]!=-1?1:0;
+                            lis[a][0]+=lis[a][0]!=-1?1:0;
+                            lis[d][0]+=lis[d][0]!=-1?1:0;
+                            lis[f][0]+=lis[f][0]!=-1?1:0;
+                        }
+                        if(fila==8 && colm > 0 && colm <8){
+                            lis[d][0]+=lis[d][0]!=-1?1:0;
+                            lis[e][0]+=lis[e][0]!=-1?1:0;
+                            lis[a][0]+=lis[a][0]!=-1?1:0;
+                            lis[b][0]+=lis[b][0]!=-1?1:0;
+                            lis[c][0]+=lis[c][0]!=-1?1:0;
+                        }
+                        if(fila==8 && colm==0){
+                            lis[b][0]+=lis[b][0]!=-1?1:0;
+                            lis[c][0]+=lis[c][0]!=-1?1:0;
+                            lis[e][0]+=lis[e][0]!=-1?1:0;
+                        }
+                        if(fila==8&& colm==8){
+                            lis[a][0]+=lis[a][0]!=-1?1:0;
+                            lis[b][0]+=lis[b][0]!=-1?1:0;
+                            lis[d][0]+=lis[d][0]!=-1?1:0;
+
+                        }
+                    }
+                    
+                    
+                    
+                }
+                    
+                return lis;
+            }
+        class Clok extends React.Component{
+            constructor(props){
+                super(props);
+                this.state={
+                  timer:0,  
+                };
+                this.st=props.st;
+            }
+            componentDidMount() {
+                this.timerID = setInterval(() => this.tick(), 1000 ); 
+            }
+             componentWillUnmount() {
+                 clearInterval(this.timerID);
+             }
+            tick() {
+                if(this.props.st==true){
+                this.setState({ 
+                    timer: this.state.timer+1});
+                }
+            }
+            render(props){
+           console.log("estado: ",this.props.st);
+			var letterStyle={
+				padding:10,
+				margin:10,
+				backgroundColor:this.props.bgcolor,
+				color:"#333",
+				display: "inline-block",
+				fontFamily:"monospace",
+				fontSize:32,
+				textAlign:"center"
+			}
+            
+			return (
+				  <div style={letterStyle}>
+                  {this.state.timer}
+                  {"s"}
+				  </div>
+			);
+			}
+        }
+        class Game extends React.Component {
+            constructor(props){
+                var varR=ale(10);
+                super(props); // para poder usar "this"
+                this.state = { //las propiedades?
+                    esAl: varR, //almacena los lugares donde estan las bombas
+
+                    history: [{
+                        squares: ale2(82,varR), //aqui esta el arreglo de los datos
+                    }],
+                    
+                    stepNumber: 0,
+                    xIsNext:true,
+                    stado: true,
+                    
+                };
+                //console.log("aqui esta ale:",this.state.esAl);
+                
+                
+            }
+           winn(ls){
+               var win=0;
+               var est=0;//0 es sigue jugando
+                         //1 es perdiste
+                         //2 es ganaste
+               for (var tem of ls){
+                   if(tem[0]==-1 && tem[1]==1){
+                       return 1;
+                   }
+                   if(tem[0]!=-1 && tem[1]==1){
+                       win+=1;
+                   }
+               }
+               if(win==71){
+                   //gano
+                   return 2;
+               }
+               return 0;
+           }
+           handleClick(i){
+                const history = this.state.history.slice(0, this.state.stepNumber+1);
+                const current = history[history.length-1];
+                const squares = current.squares.slice();
+                if(this.winn(squares)!=0){
+                    return;
+                }
+                //squares[i] = this.state.xIsNext ? 'X': 'O';
+                squares[i][1] = 1;
+                console.log("si ouedo=",this.state)
+                this.setState({
+                    
+                    history: history.concat([{
+                        squares: squares
+                    }]),
+                    stepNumber: history.length,
+                    xIsNext: !this.state.xIsNext
+                    });
+                               //console.log("aqui esta ale:",this.esAl);
+
+            }
+            jumpTo(step){
+                this.setState({
+                    stepNumber: step,
+                    xIsNext: (step % 2) === 0
+                });
+                
+            }
+          render() {
+              const history = this.state.history;
+              const current = history[this.state.stepNumber];
+              const winner= this.winn(current.squares);
+              
+              console.log("++++",current.squares);
+              const moves = history.map((step,move)=> {
+                  const desc = move ?
+                        "moverte a #"+move:
+                        "Ir al inicio del juego";
+                  return (
+                    <li key={move}>
+                        <button onClick={() =>
+                            this.jumpTo(move)
+                        }>{desc}
+                            
+                        </button>
+                    </li>
+                  );
+              });
+              let status;
+              var est=true;
+              if(winner==2){
+                  status = "ganador ";
+                  est=false;
+              }
+             if(winner==1){   
+                  status = "has perdido";
+                  est=false;      
+             }
+              
+              console.log("est:",est);
+            return (
+               
+              <div className="game">
+                <div className="game-board">
+                  <Board 
+                      squares={current.squares}
+                      onClick={i => this.handleClick(i)}
+                  />
+                  <Clok bgcolor="#ff6663" st={est}/>    
+                </div> 
+                <div className="game-info">
+                  <div>{status}</div>
+                  
+                </div>
+              </div>
+            );
+          }
+        }
+        function relo(){
+            let t=new Date
+        }
+        // ========================================
+
+
+        function calculateWinner(squares) {
+            const lines = [
+                [0, 1, 2],
+                [3, 4, 5],
+                [6, 7, 8],
+                [0, 3, 6],
+                [1, 4, 7],
+                [2, 5, 8],
+                [0, 4, 8],
+                [2, 4, 6],
+            ];
+            for (let i = 0; i < lines.length; i++) {
+                const [ a , b, c] = lines[i]; //separa el arreglo en tres variables
+                
+                //console.log(a,b,c);
+                
+                if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
+                  return squares[a];
+                }
+            }
+          return null;
+        }
+
+        ReactDOM.render(
+          <Game />,
+          document.getElementById('root')
+        );
+</script>  
+        
+</body>    
+</html>
