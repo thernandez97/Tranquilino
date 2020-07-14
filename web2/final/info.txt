@@ -1,0 +1,2 @@
+Esta carpeta contiene el crud del proyecto final en react native.
+tranquilino hernandez garcia.
